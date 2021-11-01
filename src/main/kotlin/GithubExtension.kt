@@ -1,24 +1,22 @@
 import com.jcabi.github.Coordinates
 import com.jcabi.github.Github
 import com.jcabi.github.RtGithub
-import com.kotlindiscord.kord.extensions.checks.threadFor
 import com.kotlindiscord.kord.extensions.commands.Arguments
-import com.kotlindiscord.kord.extensions.commands.converters.impl.*
+import com.kotlindiscord.kord.extensions.commands.converters.impl.defaultingString
+import com.kotlindiscord.kord.extensions.commands.converters.impl.string
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.publicSlashCommand
 import com.kotlindiscord.kord.extensions.types.respond
 import com.kotlindiscord.kord.extensions.utils.env
 import dev.kord.common.Color
-import dev.kord.common.entity.ArchiveDuration
 import dev.kord.core.behavior.channel.TextChannelBehavior
 import dev.kord.rest.builder.message.create.embed
 import kotlinx.datetime.Clock
-import kotlin.concurrent.thread
 
 class GithubExtension : Extension() {
     override val name = "GitHub_ext"
-    val github: Github = RtGithub("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")
-    val repo = github.repos()[Coordinates.Simple("Discord-Github-Bridge/turbo-waddle")]
+    val github: Github = RtGithub(env("GITHUB_BOT_TOKEN"))
+    val repo = github.repos()[Coordinates.Simple(env("GITHUB_REPO").split("://github.com/")[1])]
     override suspend fun setup() {
         issue(arrayOf("issue", "todo", "task"))
     }
@@ -32,10 +30,14 @@ class GithubExtension : Extension() {
                     val i = repo.issues().create(arguments.title, arguments.description)
                     if (arguments.labels != "") i.labels().add(arguments.labels.split(","))
                     val r = respond {
-//                        content = "Issue added ${"https://github.com/Discord-Github-Bridge/turbo-waddle/issues/"+i.number()}"
                         embed {
                             this.title = arguments.title
-                            this.url = env("GITHUB_REPO")
+                            this.description = arguments.description
+                            this.url = env("GITHUB_REPO")+"/issues/${i.number()}"
+                            this.author {
+                                this.name = user.asUser().username //todo: work with nicknames
+                                icon = user.asUser().avatar?.url
+                            }
                             color = Color(238636)
                             footer {
                                 this.text = env("GITHUB_REPO").split("://github.com/")[1]
@@ -47,7 +49,7 @@ class GithubExtension : Extension() {
                     (this.channel.asChannel() as TextChannelBehavior).startPublicThreadWithMessage(
                         r,
                         "Issue : " + arguments.title
-                    )
+                    ).addUser(user.id)
 
                 }
             }

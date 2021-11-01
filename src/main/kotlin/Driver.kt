@@ -11,6 +11,7 @@ val SERVER_ID = Snowflake(  // Store this as a Discord snowflake, aka an ID
 )
 private val TOKEN = env("DISCORD_BOT_TOKEN")
 suspend fun main() {
+
     val bot = ExtensibleBot(TOKEN) {
         applicationCommands { defaultGuild = SERVER_ID }
         extensions {
