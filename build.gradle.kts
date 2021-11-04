@@ -23,8 +23,11 @@ dependencies {
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
     implementation("org.slf4j:slf4j-simple:1.7.30")
 //    api("org.kohsuke:github-api:1.133")
-    // https://mvnrepository.com/artifact/com.jcabi/jcabi-github
-    implementation("com.jcabi:jcabi-github:1.1.2")
+//    // https://mvnrepository.com/artifact/com.jcabi/jcabi-github
+//    implementation("com.jcabi:jcabi-github:1.1.2")
+    // https://mvnrepository.com/artifact/org.kohsuke/github-api
+    implementation("org.kohsuke:github-api:1.135")
+
     // https://mvnrepository.com/artifact/javax.json/javax.json-api
     implementation("javax.json:javax.json-api:1.1.4")
 

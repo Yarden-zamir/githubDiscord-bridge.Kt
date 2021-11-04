@@ -1,6 +1,4 @@
-import com.jcabi.github.Coordinates
-import com.jcabi.github.Github
-import com.jcabi.github.RtGithub
+import GDBridge.GithubExtension
 import com.kotlindiscord.kord.extensions.ExtensibleBot
 import com.kotlindiscord.kord.extensions.utils.env
 import dev.kord.common.entity.Snowflake
@@ -19,4 +17,5 @@ suspend fun main() {
         }
     }
     bot.start()
+
 }
